@@ -25,7 +25,7 @@ class lazy_mofo{
     public $form_default_value = array();   // for form(), define default values for columns when adding a record. if auto_populate_control = true then this array will be populated from the defaults in the database. 
     public $form_display_identity = true;   // display identity value when editing a record
     public $form_additional_html = '';      // add any addition html inside the <form> after the form buttons.
-    public $form_text_input_size = 35;      // size of text inputs on form()
+    public $form_text_input_size = 100;      // size of text inputs on form()
 
     public $grid_sql = '';                  // render grid with desired sql. defaults to 'select *, identity_name from table'. *important* to display [edit] and [delete] links, the identity must be the last column in the sql statement. this arangement allows grid to display data without showing the identity.
     public $grid_sql_param = array();       // associative array to bind variables to grid_sql. see php docs on PDOStatement->execute for more info.
@@ -36,9 +36,9 @@ class lazy_mofo{
     public $grid_show_search_box = false;   // display search field at the top - grid_sql must be altered to accomodate search
     public $grid_limit = 200;               // pagination limit number of records per page
     public $grid_repeat_header_at = 0;      // interval of records to repeat header column titles at
-    public $grid_show_images = false;       // option to show images inside the grid, otherwise a link is displayed for --image type
-    public $grid_ellipse_at = 30;           // limit number of characters displayed, set to 0 to disable truncation
-    public $grid_text_input_size = 10;      // size of text input when input is displayed
+    public $grid_show_images = true;       // option to show images inside the grid, otherwise a link is displayed for --image type
+    public $grid_ellipse_at = 0;           // limit number of characters displayed, set to 0 to disable truncation
+    public $grid_text_input_size = 50;      // size of text input when input is displayed
 
     public $text_input_max_length_default = 0;  // global max_length attribute for input. 0 is disabled
     public $text_input_max_length = array();    // array of column names to max length integers, optional
@@ -50,7 +50,7 @@ class lazy_mofo{
     public $validate_tip_in_placeholder = true; // allow input placeholder to display validation tip
     public $validate_text_general = "Missing or Invalid Input"; // generic message displayed at the top when validation error occurs, optional
 
-    public $on_insert_user_function = '';       // user function called before data is inserted, updated, or deleteed. return a string error message for server-side validation. Can be used to formating _POST data.
+    public $on_insert_user_function = '';       // user function called before data is inserted, updated, or deleted. return a string error message for server-side validation. Can be used to formating _POST data.
     public $on_update_user_function = '';
     public $on_delete_user_function = '';
     public $on_update_grid_user_function = '';
@@ -62,19 +62,18 @@ class lazy_mofo{
 
     public $cast_user_function = array();       // user function for casting data, example : $lm->cast_function['field_name'] = 'my_casting_function'
 
-    public $return_to_edit_after_insert = true; // redirect to edit screen after adding or updating a record. if false, user is sent back to grid view.
-    public $return_to_edit_after_update = true; 
+    public $return_to_edit_after_insert = false; // redirect to edit screen after adding or updating a record. if false, user is sent back to grid view.
+    public $return_to_edit_after_update = false; 
 
-    public $redirect_using_js = false;          // redirect to a page using java-script instead of header modification by means of PHP. 
+    public $redirect_using_js = false; // redirect to a page using java-script instead of header modification by means of PHP. 
 
-    public $charset_mysql = 'utf8mb4';          // charset for mysql communications. was utf8 before version 2017-08-31 
-    public $charset = 'UTF-8';                  // charset for output
-
-    public $timezone = 'UTC';                   // if no timezone is set in the application, then this timezone is set for strtotime. http://php.net/manual/en/timezones.others.php
+    // upload paths                             // relative path names only! paths are created at runtime as needed
+    public $upload_path = 'uploads';            // required when using --image or --document input types
+    public $thumb_path = 'thumbs';              // optional, leave blank if you don't need thumbnails
 
     // image settings    
-    public $upload_width = 400;                 // 0 height or width means no resizing or cropping
-    public $upload_height = 400;
+    public $upload_width = 0;                 // 0 height or width means no resizing or cropping
+    public $upload_height = 0;
     public $upload_crop = false;                // crop versus resize: resize keeps the original aspect ratio but limits the size of the image
     public $thumb_width = 100;
     public $thumb_height = 100;
@@ -83,47 +82,51 @@ class lazy_mofo{
     public $image_quality = 80;                       // image quality when resizing and cropping, 1-100
     public $image_style = "style='height: 100px;'";   // apply style to all images displayed. limiting size is nice to keep things orderly.
 
+    public $charset_mysql = 'utf8mb4';                // charset for mysql communications. was utf8 before version 2017-08-31 
+    public $charset = 'UTF-8';                        // charset for output
+
+    public $timezone = 'UTC';                         // if no timezone is set in the application, then this timezone is set for strtotime. http://php.net/manual/en/timezones.others.php
+
+    public $date_in = 'Y-m-d';                        // input format into database, no need to change this
+    public $datetime_in = 'Y-m-d H:i:s';              
+
+    // US date format
+    public $date_out = 'm/d/Y';                       // output date
+    public $datetime_out = 'm/d/Y h:i A';             // output datetime
+
+    // non-US date format
+    //public $date_out = 'd/m/Y';
+    //public $datetime_out = 'd/m/Y h:i A';
+
+    // ISO-ish date format, or when using html5 date input
+    //public $date_out = 'Y-m-d';
+    //public $datetime_out = 'Y-m-d H:i';
+
     public $restricted_numeric_input = '/[^0-9\.\-]/';// optional, regular expression of what numbers are allowed to be sent to the database. helpful to remove dollar signs and spaces. many non-US countries use comma instead of decimal points and spaces instead of commas.
 
-    public $upload_allow_list = '.mp3 .jpg .jpeg .png .gif .doc .docx .xls .xlsx .txt .pdf'; // space delimted file name extentions. include period
+    public $upload_allow_list = '.ogg .mp3 .jpg .jpeg .png .gif .doc .docx .xls .xlsx .txt .pdf'; // space delimted file name extentions. include period
 
-    public $export_csv_file_name = '';
-    public $export_separator = ',';                  // separator for csv export
-    public $export_delim = '"';                      // delimiter for csv export 
-    public $export_delim_escape = '"';               // if delim is used in content add this string before for escaping
+    public $delete_confirm      = 'Are you sure you want to delete this record?';       // javascript popup confirmation
+    public $update_grid_confirm = 'Are you sure you want to delete [count] record(s)?'; // javascript popup confirmation when deleting on the grid
 
-    public $delim = '|';                             // when using mutiple checkboxes or multipleselect, delimiter for values
-
-    public $select_first_option_blank = true;        // make first option blank on dropdown --select and --selectmultiple inputs
-
-    // start i18n defaults // 
-
-    // javascript dialogs
-    public $delete_confirm      = 'Are you sure you want to delete this record?';
-    public $update_grid_confirm = 'Are you sure you want to delete [count] record(s)?';
-
-    // form buttons
     public $form_add_button    = "<input type='submit' value='Add' class='lm_button'>";
     public $form_update_button = "<input type='submit' value='Update' class='lm_button'>"; 
-    public $form_back_button   = "<input type='button' value='&lt; Back' class='lm_button dull' onclick='_back();'>";
+    public $form_back_button   = "<input type='button' value='&lt; Back' class='lm_button dull' onclick='_back();'>"; // use type=button for delete and cancel so form presses the right button with enter key
     public $form_delete_button = "<input type='button' value='Delete' class='lm_button error' onclick='_delete();'>"; 
 
-    // titles in the <th> of top of the edit form 
-    public $form_text_title_add    = 'Add Record';   
+    public $form_text_title_add    = 'Add Record';   // titles in the <th> of top of the edit form 
     public $form_text_title_edit   = 'Edit Record';
-    public $form_text_record_saved = 'Record Saved';
+    public $form_text_record_saved = 'Record Saved'; // customize success messages
     public $form_text_record_added = 'Record Added';
 
-    // links on grid
-    public $grid_add_link    = "<a href='[script_name]action=edit&amp;[qs]' class='lm_grid_add_link'>Add a Record</a>";
-    public $grid_edit_link   = "<a href='[script_name]action=edit&amp;[identity_name]=[identity_id]&amp;[qs]'>[edit]</a>";
+	//public $grid_admin_link = "<a href='/admin.php' class='lm_grid_add_link'>Enable Edit or Remove Entries</a>";
+    public $grid_add_link    = "<a href='[script_name]action=edit&amp;[qs]' class='lm_grid_add_link'>Add a Record</a>";  // link at displayed at the top to add a new record. [script_name] placeholder  will be populated by grid()
+    public $grid_edit_link   = "<a href='[script_name]action=edit&amp;[identity_name]=[identity_id]&amp;[qs]'>[edit]</a>"; // note special [identity_name] and [identity_id] placeholders that will be populated by grid()
     public $grid_delete_link = "<a href='#' onclick='return _delete(\"[identity_id]\");'>[delete]</a>";
     public $grid_export_link = "<a href='[script_name]_export=1&amp;[qs]' title='Download CSV'>Export</a>";
 
-    // search box
-    public $grid_search_box = "<form action='[script_name]' class='lm_search_box'><input type='text' name='_search' value='[_search]' size='20' class='lm_search_input'><a href='[script_name]' style='margin: 0 10px 0 -20px; display: inline-block;' title='Clear Search'>x</a><input type='submit' class='lm_button lm_search_button' value='Search'><input type='hidden' name='action' value='search'>[query_string_list]</form>"; 
+    public $grid_search_box = "<form action='[script_name]' class='lm_search_box'><input type='text' name='_search' value='[_search]' size='20' class='lm_search_input'><a href='[script_name]' style='margin: 0 10px 0 -20px; display: inline-block;' title='Clear Search'>x</a><input type='submit' value='Search' class='lm_button lm_search_button'><input type='hidden' name='action' value='search'>[query_string_list]</form>"; 
 
-    // grid messages
     public $grid_text_record_added     = "Record Added";
     public $grid_text_changes_saved    = "Changes Saved";
     public $grid_text_record_deleted   = "Record Deleted";
@@ -131,9 +134,8 @@ class lazy_mofo{
     public $grid_text_delete           = "Delete";
     public $grid_text_no_records_found = "No Records Found";
 
-    // pagination text
-    public $pagination_text_use_paging = 'use paging';
-    public $pagination_text_show_all   = 'show all';
+    public $pagination_text_use_paging = '[use paging]';
+    public $pagination_text_show_all   = '[show all]';
     public $pagination_text_records    = 'Record(s)';
     public $pagination_text_go         = 'Go';
     public $pagination_text_page       = 'Page';
@@ -141,26 +143,22 @@ class lazy_mofo{
     public $pagination_text_next       = 'Next&gt;';
     public $pagination_text_back       = '&lt;Back';
 
-    // delete upload link text
     public $text_delete_image = 'delete image';
     public $text_delete_document = 'delete document';
 
-    // relative paths for --image or --document uploads
-    // paths are created at runtime as needed
-    public $upload_path = 'uploads';            // required when using  input types
-    public $thumb_path = 'thumbs';              // optional, leave blank if you don't need thumbnails
+    public $export_csv_file_name = '';
+    public $export_separator = ',';           // separator for csv export
+    public $export_delim = '"';               // delimiter for csv export 
+    public $export_delim_escape = '"';        // if delim is used in content add this string before for escaping
 
-    // output date formats
-    public $date_out = 'm/d/Y';                 // output date, change to d/m/Y for non-us
-    public $datetime_out = 'm/d/Y h:i A';       // output datetime, change to d/m/Y h:i A for non-us
+    public $delim = '|'; // when using mutiple checkboxes or multipleselect, delimiter for values
 
-    // end i18n defaults // 
+    public $select_first_option_blank = false; // make first option blank on dropdown --select and --selectmultiple inputs
 
-    public $date_in = 'Y-m-d';                  // do not change - input format into database
-    public $datetime_in = 'Y-m-d H:i:s';        // do not change
-    private $set_names = false;                 // do not change - internal flag
+    private $set_names = false; 
 
-    function __construct($dbh, $i18n = 'en-us'){
+
+    function __construct($dbh){
 
         if(!$dbh)
             die('Pass in a PDO object connected to the mysql database.');
@@ -178,12 +176,6 @@ class lazy_mofo{
         if(!isset($_SESSION['_csrf']))
             $_SESSION['_csrf'] = '';
 
-        // load requested internationalization file, en-us is defined above, in this class
-        if(strlen($i18n) > 0 && $i18n != 'en-us'){
-            if(!file_exists("i18n/{$i18n}.php"))
-                die("Error: Requested i18n file ({$i18n}.php) does not exists.");
-            include("i18n/{$i18n}.php");    
-        }
     }
 
     
@@ -884,7 +876,8 @@ class lazy_mofo{
             return;    
         }
 
-        // populate link placeholders    
+        // populate link placeholders  
+		//$grid_admin_link = $this->grid_admin_link;
         $grid_add_link = $this->grid_add_link;
         $grid_edit_link = $this->grid_edit_link;
         $grid_delete_link = $this->grid_delete_link;
@@ -1653,6 +1646,8 @@ class lazy_mofo{
             return $this->date_out($value, true); 
         elseif($cmd == 'email')
             return "<a href='mailto:$value'>$value</a>";
+		elseif($cmd == 'link')
+            return "<a target='_blank' href='$value'>$value</a>";
         elseif($cmd == 'document')
             return $this->html_document_output($value);
         elseif($cmd == 'image')
