@@ -25,18 +25,18 @@ serving code snippets, document files, images and links.
 Eventually there will be admin and users, to allow users to insert data but not remove it but for now everyone has control.
 
 
-Installation
+Installation Guide
 =========================
 
 Database Setup
 =========================
 
 MySQL Database setup:
-Login into PhpMyAdmin -> Import -> Browse you computer -> choose "database_setup.sql"
+    Login into PhpMyAdmin -> Import -> Browse you computer -> choose "database_setup.sql"
 
 Copy Files
 =========================
-Only 3 File are required to run.
+    Only 3 File are required to run.
 
 Copy these 3 files into you WWW directory.
     1. Index.php
