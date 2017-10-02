@@ -13,7 +13,6 @@ LM is a single PHP5 class for performing CRUD (create, read, update and delete) 
 -   Grid features include pagination, sorting, and inline editing. Searching can be added.
 -   Grid uses SQL_CALC_FOUND_ROWS, limit + offset for efficiency and low memory usage on large datasets
 -   Built-in validation, error reported next to input
--   i18n/internationalization enabled. See i18n/template.php if want to submit your county + language file.
 -   Lightweight; a single class====================================
 
 
