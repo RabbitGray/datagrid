@@ -28,17 +28,22 @@ Eventually there will be admin and users, to allow users to insert data but not 
 Installation
 =========================
 
+Database Setup
+=========================
+
 MySQL Database setup:
 Login into PhpMyAdmin -> Import -> Browse you computer -> choose "database_setup.sql"
 
+Copy Files
+=========================
 Only 3 File are required to run.
 
 Copy these 3 files into you WWW directory.
-1. Index.php
-2. lazy_mofo.php
-3. style.ss
+    1. Index.php
+    2. lazy_mofo.php
+    3. style.ss
 
-Setup
+Configuration
 =========================
 
 Edit index.php
