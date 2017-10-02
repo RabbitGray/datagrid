@@ -36,20 +36,21 @@ MySQL Database setup:
 
 Copy Files
 =========================
-    Only 3 File are required to run.
+    Only 4 File are required to run.
 
-Copy these 3 files into you WWW directory.
+Copy these 4 files into you WWW directory.
     1. Index.php
-    2. lazy_mofo.php
-    3. style.ss
+    2. db_conn.php
+    3. lazy_mofo.php
+    4. style.ss
 
 Configuration
 =========================
 
-Edit index.php
-on line 26 and 27 you should see
+Edit db_conn.php
+on line 5 and 6 you should see
 
     $db_user = 'root';
-    $db_pass = 'root';
+    $db_pass = 'password';
     
 change these to your MySQL login details.
