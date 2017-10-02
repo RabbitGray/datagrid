@@ -36,13 +36,11 @@ MySQL Database setup:
 
 Copy Files
 =========================
-    Only 4 File are required to run.
-
 Copy these 4 files into you WWW directory.
-    1. Index.php
-    2. db_conn.php
-    3. lazy_mofo.php
-    4. style.ss
+   1. Index.php
+   2. db_conn.php
+   3. lazy_mofo.php
+   4. style.ss
 
 Configuration
 =========================
