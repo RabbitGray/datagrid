@@ -9,7 +9,7 @@ header('Content-Type: text/html; charset=utf-8');
 
 include('lazy_mofo.php');
 //connect to database
-include('DB_conn.php');
+include('db_conn.php');
 
 echo "
 <!DOCTYPE html>
