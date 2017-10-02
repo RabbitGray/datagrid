@@ -19,6 +19,9 @@ LM is a single PHP5 class for performing CRUD (create, read, update and delete) 
 
 
 
-This version focuses on serving code snippets, document files, images and links. 
-   
+This version focuses on: 
+=========================
+serving code snippets, document files, images and links. 
+===================================================================================
+
 Eventually there will be admin and users, to allow users to insert data but not remove it but for now everyone has control.
