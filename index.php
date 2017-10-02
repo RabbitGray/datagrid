@@ -8,6 +8,8 @@ if(!ob_start('ob_gzhandler'))
 header('Content-Type: text/html; charset=utf-8');
 
 include('lazy_mofo.php');
+//connect to database
+include('DB_conn.php');
 
 echo "
 <!DOCTYPE html>
@@ -18,14 +20,6 @@ echo "
 </head>
 <body>
 "; 
-
-
-// enter your database host, name, username, and password
-$db_host = 'localhost';
-$db_name = 'documents';
-$db_user = 'root';
-$db_pass = 'root';
-
 
 // connect with pdo 
 try {
